@@ -7,6 +7,7 @@ import Dashboard from '@/components/Dashboard'
 import AlertsPanel from '@/components/AlertsPanel'
 import ProfilePanel from '@/components/ProfilePanel'
 import ReportDetail from '@/components/ReportDetail'
+import Logo from '@/components/Logo'
 import { ValidationResult } from '@/lib/validator'
 import { mockReports, SavedReport } from '@/lib/mockReports'
 
@@ -37,26 +38,17 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-slate-50">
       {/* Navigation Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+      <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200/60 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo - clickable to go home */}
             <button
               onClick={handleLogoClick}
-              className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity"
+              className="flex items-center hover:opacity-80 transition-opacity"
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-lg md:text-xl font-bold text-gray-900">FAIR Data Compliance Guardrail</h1>
-                <p className="text-xs text-gray-500">Research Master Data Platform</p>
-              </div>
-              <span className="sm:hidden text-sm font-bold text-gray-900">FAIR Guardrail</span>
+              <Logo size="md" />
             </button>
 
             {/* Right side - Alerts and Profile */}
@@ -69,17 +61,17 @@ export default function Home() {
                     setAlertsOpen(!alertsOpen)
                     setProfileOpen(false)
                   }}
-                  className={`p-2 rounded-lg transition-colors relative ${
+                  className={`p-2 rounded-xl transition-all duration-200 relative ${
                     alertsOpen
-                      ? 'bg-gray-100 text-gray-900'
-                      : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                      ? 'bg-indigo-50 text-indigo-600'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
                   }`}
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                   {unreadAlertsCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg shadow-rose-500/30">
                       {unreadAlertsCount > 9 ? '9+' : unreadAlertsCount}
                     </span>
                   )}
@@ -100,16 +92,16 @@ export default function Home() {
                     setProfileOpen(!profileOpen)
                     setAlertsOpen(false)
                   }}
-                  className={`flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-lg transition-colors ${
+                  className={`flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-xl transition-all duration-200 ${
                     profileOpen
-                      ? 'bg-gray-100'
-                      : 'hover:bg-gray-100'
+                      ? 'bg-indigo-50'
+                      : 'hover:bg-slate-100'
                   }`}
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-lg shadow-indigo-500/30">
                     SC
                   </div>
-                  <svg className="w-4 h-4 text-gray-500 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-slate-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -139,15 +131,15 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setView('dashboard')}
-                className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-200 rounded-xl transition-colors"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">New Validation</h2>
-                <p className="text-gray-600">
+                <h2 className="text-2xl font-bold text-slate-900">New Validation</h2>
+                <p className="text-slate-600">
                   Submit experimental data for FAIR compliance validation
                 </p>
               </div>
@@ -181,14 +173,18 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-12">
+      <footer className="bg-white border-t border-slate-200 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
-            <p className="text-xs sm:text-sm text-gray-500">
-              FAIR Data Compliance Guardrail
-            </p>
-            <p className="text-xs sm:text-sm text-gray-400">
-              Powered by Quome AI
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-slate-700">FAIR<span className="text-indigo-600">guard</span></span>
+              <span className="text-slate-300">|</span>
+              <p className="text-xs sm:text-sm text-slate-500">
+                Research Data Compliance Platform
+              </p>
+            </div>
+            <p className="text-xs sm:text-sm text-slate-400">
+              Powered by <span className="font-medium text-slate-500">Quome AI</span>
             </p>
           </div>
         </div>

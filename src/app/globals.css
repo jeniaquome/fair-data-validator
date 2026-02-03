@@ -1,18 +1,187 @@
 @import "tailwindcss";
 
+/* FAIRguard Brand Design System */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 249, 250, 251;
-  --background-end-rgb: 255, 255, 255;
+  /* Brand Colors */
+  --brand-primary: #4F46E5;
+  --brand-primary-dark: #4338CA;
+  --brand-primary-light: #6366F1;
+
+  /* FAIR Principle Colors */
+  --fair-findable: #8B5CF6;
+  --fair-accessible: #0EA5E9;
+  --fair-interoperable: #14B8A6;
+  --fair-reusable: #F59E0B;
+
+  /* Semantic Colors */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #F43F5E;
+  --color-info: #3B82F6;
+
+  /* Background */
+  --bg-primary: #F8FAFC;
+  --bg-secondary: #F1F5F9;
+  --bg-card: #FFFFFF;
+
+  /* Text */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+
+  /* Gradients */
+  --gradient-brand: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #8B5CF6 100%);
+  --gradient-fair: linear-gradient(135deg, #8B5CF6 0%, #0EA5E9 33%, #14B8A6 66%, #F59E0B 100%);
+  --gradient-card: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
 }
 
+/* Base Styles */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--text-primary);
+  background: var(--bg-primary);
   min-height: 100vh;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Brand Gradient Text */
+.text-gradient-brand {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* FAIR Gradient Border */
+.border-gradient-fair {
+  position: relative;
+  background: var(--bg-card);
+  border-radius: 12px;
+}
+
+.border-gradient-fair::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: 12px;
+  background: var(--gradient-fair);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Glass Card Effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Brand Button */
+.btn-brand {
+  background: var(--gradient-brand);
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.3);
+}
+
+.btn-brand:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(79, 70, 229, 0.4);
+}
+
+/* FAIR Badge Styles */
+.fair-badge-f {
+  background: rgba(139, 92, 246, 0.1);
+  color: #7C3AED;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.fair-badge-a {
+  background: rgba(14, 165, 233, 0.1);
+  color: #0284C7;
+  border: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.fair-badge-i {
+  background: rgba(20, 184, 166, 0.1);
+  color: #0D9488;
+  border: 1px solid rgba(20, 184, 166, 0.2);
+}
+
+.fair-badge-r {
+  background: rgba(245, 158, 11, 0.1);
+  color: #D97706;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+/* Animated Gradient Border */
+@keyframes gradient-rotate {
+  0% { --angle: 0deg; }
+  100% { --angle: 360deg; }
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px -12px rgba(79, 70, 229, 0.25);
+}
+
+/* Score ring animation */
+@keyframes score-fill {
+  from {
+    stroke-dasharray: 0 352;
+  }
+}
+
+.score-ring {
+  animation: score-fill 1s ease-out forwards;
+}
+
+/* Pulse animation for notifications */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.pulse-notification::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #F43F5E;
+  animation: pulse-ring 1.5s ease-out infinite;
 }

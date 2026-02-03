@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe('FAIR Data Compliance Guardrail - Dashboard', () => {
   test('should load the dashboard by default', async ({ page }) => {
     await page.goto('/')
-    await expect(page).toHaveTitle(/FAIR Data Compliance/)
+    await expect(page).toHaveTitle(/FAIRguard/)
     await expect(page.getByText('Validation Dashboard')).toBeVisible()
     await expect(page.getByText('Monitor FAIR compliance')).toBeVisible()
   })
@@ -11,20 +11,21 @@ test.describe('FAIR Data Compliance Guardrail - Dashboard', () => {
   test('should display dashboard statistics', async ({ page }) => {
     await page.goto('/')
     await expect(page.getByText('Validation Dashboard')).toBeVisible()
-    // Check for stat cards by their container structure
-    await expect(page.locator('.border-l-4.border-blue-500')).toBeVisible()
-    await expect(page.locator('.border-l-4.border-green-500')).toBeVisible()
-    await expect(page.locator('.border-l-4.border-purple-500')).toBeVisible()
-    await expect(page.locator('.border-l-4.border-yellow-500')).toBeVisible()
+    // Check for stat cards by looking for stat titles - use first() to avoid duplicate matches
+    await expect(page.getByText('Total Reports').first()).toBeVisible()
+    await expect(page.getByText('Compliance Rate').first()).toBeVisible()
+    await expect(page.getByText('Avg. FAIR Score')).toBeVisible()
+    await expect(page.getByText('Pending Review').first()).toBeVisible()
   })
 
   test('should display FAIR score chart', async ({ page }) => {
     await page.goto('/')
     await expect(page.getByText('Average FAIR Scores')).toBeVisible()
-    await expect(page.locator('.bg-purple-500').first()).toBeVisible()
-    await expect(page.locator('.bg-blue-500').first()).toBeVisible()
-    await expect(page.locator('.bg-green-500').first()).toBeVisible()
-    await expect(page.locator('.bg-orange-500').first()).toBeVisible()
+    // Check for FAIR principle colors - violet, sky, teal, amber
+    await expect(page.locator('.bg-violet-500').first()).toBeVisible()
+    await expect(page.locator('.bg-sky-500').first()).toBeVisible()
+    await expect(page.locator('.bg-teal-500').first()).toBeVisible()
+    await expect(page.locator('.bg-amber-500').first()).toBeVisible()
   })
 
   test('should display data type distribution chart', async ({ page }) => {
@@ -221,11 +222,11 @@ test.describe('FAIR Data Compliance Guardrail - Validator', () => {
     await expect(page.getByText('Validation Report')).toBeVisible()
     await expect(page.getByText(/FAIR Compliant|Not FAIR Compliant/)).toBeVisible({ timeout: 5000 })
 
-    // Check that FAIR scores are displayed
-    await expect(page.getByText('Findable', { exact: true })).toBeVisible()
-    await expect(page.getByText('Accessible', { exact: true })).toBeVisible()
-    await expect(page.getByText('Interoperable', { exact: true })).toBeVisible()
-    await expect(page.getByText('Reusable', { exact: true })).toBeVisible()
+    // Check that FAIR scores are displayed (they're now in badges with letters)
+    await expect(page.getByText('Findable')).toBeVisible()
+    await expect(page.getByText('Accessible')).toBeVisible()
+    await expect(page.getByText('Interoperable')).toBeVisible()
+    await expect(page.getByText('Reusable')).toBeVisible()
   })
 
   test('should show validation errors for incomplete data', async ({ page }) => {
@@ -260,8 +261,8 @@ test.describe('Navigation', () => {
     await page.getByRole('button', { name: /New Validation/i }).click()
     await expect(page.getByText('Submit experimental data')).toBeVisible()
 
-    // Click logo to go back
-    await page.locator('button:has-text("FAIR Data Compliance Guardrail")').click()
+    // Click logo to go back - use the button that contains the logo
+    await page.locator('button').filter({ has: page.locator('svg') }).first().click()
     await expect(page.getByText('Validation Dashboard')).toBeVisible()
   })
 
