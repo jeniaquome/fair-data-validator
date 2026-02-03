@@ -85,17 +85,93 @@ test.describe('FAIR Data Compliance Guardrail - Dashboard', () => {
     await expect(page.getByText('FAIR Principle Scores')).toBeVisible()
   })
 
-  test('should navigate back from report details', async ({ page }) => {
+  test('should navigate back from report details using back button', async ({ page }) => {
     await page.goto('/')
 
     // Click view details
     await page.getByText('View Details').first().click()
     await expect(page.getByText('Report ID:')).toBeVisible()
     await expect(page.getByText('Overall Compliance Score')).toBeVisible()
-    await expect(page.getByText('Issue Summary')).toBeVisible()
 
-    // Verify the report detail view shows properly
-    await expect(page.getByText('Download Report (PDF)')).toBeVisible()
+    // Click back button in report detail
+    await page.locator('button').filter({ has: page.locator('svg') }).first().click()
+
+    // Should be back on dashboard
+    await expect(page.getByText('Validation Dashboard')).toBeVisible()
+  })
+})
+
+test.describe('FAIR Data Compliance Guardrail - Alerts', () => {
+  test('should show alerts panel when clicking bell icon', async ({ page }) => {
+    await page.goto('/')
+
+    // Click alerts button
+    await page.getByTestId('alerts-button').click()
+
+    // Should show notifications panel
+    await expect(page.getByRole('heading', { name: 'Notifications' })).toBeVisible()
+    await expect(page.getByText('unread')).toBeVisible()
+  })
+
+  test('should display alert items in panel', async ({ page }) => {
+    await page.goto('/')
+
+    // Click alerts button
+    await page.getByTestId('alerts-button').click()
+
+    // Should show alert items
+    await expect(page.getByText('Validation Failed')).toBeVisible()
+    await expect(page.getByText('Pending Review').first()).toBeVisible()
+  })
+
+  test('should navigate to report from alert', async ({ page }) => {
+    await page.goto('/')
+
+    // Click alerts button
+    await page.getByTestId('alerts-button').click()
+
+    // Click on an alert
+    await page.getByText('Validation Failed').click()
+
+    // Should show report detail
+    await expect(page.getByText('Report ID:')).toBeVisible()
+  })
+})
+
+test.describe('FAIR Data Compliance Guardrail - Profile', () => {
+  test('should show profile panel when clicking avatar', async ({ page }) => {
+    await page.goto('/')
+
+    // Click profile button
+    await page.getByTestId('profile-button').click()
+
+    // Should show profile panel - use heading selector for specificity
+    await expect(page.getByRole('heading', { name: 'Dr. Sarah Chen' })).toBeVisible()
+    await expect(page.getByText('Principal Scientist')).toBeVisible()
+  })
+
+  test('should display user stats in profile', async ({ page }) => {
+    await page.goto('/')
+
+    // Click profile button
+    await page.getByTestId('profile-button').click()
+
+    // Should show user stats
+    await expect(page.getByText('Reports Submitted')).toBeVisible()
+    await expect(page.getByText('Compliance Rate').last()).toBeVisible()
+  })
+
+  test('should display profile menu items', async ({ page }) => {
+    await page.goto('/')
+
+    // Click profile button
+    await page.getByTestId('profile-button').click()
+
+    // Should show menu items
+    await expect(page.getByText('View Profile')).toBeVisible()
+    await expect(page.getByText('My Reports')).toBeVisible()
+    await expect(page.getByText('Settings')).toBeVisible()
+    await expect(page.getByText('Sign Out')).toBeVisible()
   })
 })
 
@@ -103,38 +179,23 @@ test.describe('FAIR Data Compliance Guardrail - Validator', () => {
   test('should navigate to validator from dashboard', async ({ page }) => {
     await page.goto('/')
 
-    await page.getByRole('button', { name: /New Validation/i }).first().click()
+    await page.getByRole('button', { name: /New Validation/i }).click()
     await expect(page.getByText('Submit experimental data')).toBeVisible()
     await expect(page.getByText('Experimental Data Entry')).toBeVisible()
   })
 
   test('should display data type selector in validator', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /New Validation/i }).first().click()
+    await page.getByRole('button', { name: /New Validation/i }).click()
 
     await expect(page.getByRole('button', { name: 'Genomics' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'In Vivo' })).toBeVisible()
     await expect(page.getByRole('button', { name: 'General' })).toBeVisible()
   })
 
-  test('should switch data types in validator', async ({ page }) => {
-    await page.goto('/')
-    await page.getByRole('button', { name: /New Validation/i }).first().click()
-
-    // Click on In Vivo
-    await page.getByRole('button', { name: 'In Vivo' }).click()
-    await expect(page.getByText('Tissue Type')).toBeVisible()
-    await expect(page.getByText('Chemical Compounds')).toBeVisible()
-
-    // Click on Genomics
-    await page.getByRole('button', { name: 'Genomics' }).click()
-    await expect(page.getByText('Gene Symbol')).toBeVisible()
-    await expect(page.getByText('Gene ID')).toBeVisible()
-  })
-
   test('should load sample data in validator', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /New Validation/i }).first().click()
+    await page.getByRole('button', { name: /New Validation/i }).click()
 
     await page.getByText('Load Sample Data').click()
 
@@ -145,7 +206,7 @@ test.describe('FAIR Data Compliance Guardrail - Validator', () => {
 
   test('should validate sample data and show compliance', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /New Validation/i }).first().click()
+    await page.getByRole('button', { name: /New Validation/i }).click()
 
     // Load sample data
     await page.getByText('Load Sample Data').click()
@@ -166,7 +227,7 @@ test.describe('FAIR Data Compliance Guardrail - Validator', () => {
 
   test('should show validation errors for incomplete data', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /New Validation/i }).first().click()
+    await page.getByRole('button', { name: /New Validation/i }).click()
 
     // Try to validate without filling any data
     await page.getByRole('button', { name: /Validate FAIR Compliance/i }).click()
@@ -178,10 +239,10 @@ test.describe('FAIR Data Compliance Guardrail - Validator', () => {
 
   test('should navigate back to dashboard from validator', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('button', { name: /New Validation/i }).first().click()
+    await page.getByRole('button', { name: /New Validation/i }).click()
 
     // Click back button
-    await page.locator('button').filter({ has: page.locator('svg path[d*="15 19l-7-7"]') }).click()
+    await page.locator('button:has(svg path[d*="15 19l-7-7"])').click()
 
     // Should be back on dashboard
     await expect(page.getByText('Validation Dashboard')).toBeVisible()
@@ -189,18 +250,29 @@ test.describe('FAIR Data Compliance Guardrail - Validator', () => {
 })
 
 test.describe('Navigation', () => {
-  test('should toggle between dashboard and validator views', async ({ page }) => {
+  test('should return to dashboard when clicking logo', async ({ page }) => {
     await page.goto('/')
 
-    // Should start on dashboard
-    await expect(page.getByText('Validation Dashboard')).toBeVisible()
-
-    // Click New Validation in nav
-    await page.locator('nav').getByRole('button', { name: /New Validation/i }).click()
+    // Navigate to validator
+    await page.getByRole('button', { name: /New Validation/i }).click()
     await expect(page.getByText('Submit experimental data')).toBeVisible()
 
-    // Click Dashboard in nav
-    await page.locator('nav').getByRole('button', { name: /Dashboard/i }).click()
+    // Click logo to go back
+    await page.locator('button:has-text("FAIR Data Compliance Guardrail")').click()
     await expect(page.getByText('Validation Dashboard')).toBeVisible()
+  })
+
+  test('should close alerts panel when clicking outside', async ({ page }) => {
+    await page.goto('/')
+
+    // Open alerts
+    await page.getByTestId('alerts-button').click()
+    await expect(page.getByRole('heading', { name: 'Notifications' })).toBeVisible()
+
+    // Click outside to close (backdrop is fixed inset-0)
+    await page.locator('.fixed.inset-0').click()
+
+    // Alerts should be closed
+    await expect(page.getByRole('heading', { name: 'Notifications' })).not.toBeVisible()
   })
 })

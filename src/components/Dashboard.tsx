@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 import { SavedReport, getReportStats } from '@/lib/mockReports'
-import ReportDetail from './ReportDetail'
 
 interface Props {
   reports: SavedReport[]
   onNewValidation: () => void
+  onViewReport?: (reportId: string) => void
 }
 
 function StatCard({ title, value, subtitle, color }: { title: string; value: string | number; subtitle?: string; color: string }) {
@@ -128,8 +128,7 @@ function DataTypeBadge({ dataType }: { dataType: SavedReport['dataType'] }) {
   )
 }
 
-export default function Dashboard({ reports, onNewValidation }: Props) {
-  const [selectedReport, setSelectedReport] = useState<SavedReport | null>(null)
+export default function Dashboard({ reports, onNewValidation, onViewReport }: Props) {
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [filterDataType, setFilterDataType] = useState<string>('all')
   const [searchTerm, setSearchTerm] = useState('')
@@ -145,13 +144,10 @@ export default function Dashboard({ reports, onNewValidation }: Props) {
     return true
   })
 
-  if (selectedReport) {
-    return (
-      <ReportDetail
-        report={selectedReport}
-        onBack={() => setSelectedReport(null)}
-      />
-    )
+  const handleViewReport = (reportId: string) => {
+    if (onViewReport) {
+      onViewReport(reportId)
+    }
   }
 
   return (
@@ -301,7 +297,7 @@ export default function Dashboard({ reports, onNewValidation }: Props) {
                     </td>
                     <td className="px-6 py-4">
                       <button
-                        onClick={() => setSelectedReport(report)}
+                        onClick={() => handleViewReport(report.id)}
                         className="text-blue-600 hover:text-blue-800 text-sm font-medium"
                       >
                         View Details
