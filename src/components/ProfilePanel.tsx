@@ -36,7 +36,7 @@ export default function ProfilePanel({ isOpen, onClose }: Props) {
       <div className="fixed inset-0 z-40" onClick={onClose} />
 
       {/* Panel */}
-      <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
+      <div className="fixed sm:absolute inset-x-2 sm:inset-x-auto sm:right-0 top-16 sm:top-full sm:mt-2 w-auto sm:w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden max-h-[80vh] sm:max-h-none overflow-y-auto">
         {/* Profile Header */}
         <div className="px-4 py-5 bg-gradient-to-br from-blue-600 to-purple-600">
           <div className="flex items-center gap-4">

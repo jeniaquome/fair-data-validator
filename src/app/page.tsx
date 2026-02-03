@@ -45,17 +45,18 @@ export default function Home() {
             {/* Logo - clickable to go home */}
             <button
               onClick={handleLogoClick}
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">FAIR Data Compliance Guardrail</h1>
+              <div className="hidden sm:block">
+                <h1 className="text-lg md:text-xl font-bold text-gray-900">FAIR Data Compliance Guardrail</h1>
                 <p className="text-xs text-gray-500">Research Master Data Platform</p>
               </div>
+              <span className="sm:hidden text-sm font-bold text-gray-900">FAIR Guardrail</span>
             </button>
 
             {/* Right side - Alerts and Profile */}
@@ -99,7 +100,7 @@ export default function Home() {
                     setProfileOpen(!profileOpen)
                     setAlertsOpen(false)
                   }}
-                  className={`flex items-center gap-2 p-1.5 rounded-lg transition-colors ${
+                  className={`flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-lg transition-colors ${
                     profileOpen
                       ? 'bg-gray-100'
                       : 'hover:bg-gray-100'
@@ -108,7 +109,7 @@ export default function Home() {
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
                     SC
                   </div>
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-gray-500 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -181,12 +182,12 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-gray-500">
-              FAIR Data Compliance Guardrail - Ensuring data quality for the Research Master Data Platform
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
+            <p className="text-xs sm:text-sm text-gray-500">
+              FAIR Data Compliance Guardrail
             </p>
-            <p className="text-sm text-gray-400">
+            <p className="text-xs sm:text-sm text-gray-400">
               Powered by Quome AI
             </p>
           </div>

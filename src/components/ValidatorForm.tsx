@@ -82,9 +82,9 @@ export default function ValidatorForm({ onValidationStart, onValidationComplete 
   const experimentTypes = getExperimentTypes(formData.dataType)
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">Experimental Data Entry</h2>
+    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 sm:mb-6">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Experimental Data Entry</h2>
         <button
           onClick={handleLoadSample}
           className="text-sm text-blue-600 hover:text-blue-800 underline"
@@ -97,12 +97,12 @@ export default function ValidatorForm({ onValidationStart, onValidationComplete 
         {/* Data Type Selection */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Data Type</label>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {(['genomics', 'in_vivo', 'general'] as DataType[]).map(type => (
               <button
                 key={type}
                 onClick={() => handleDataTypeChange(type)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 sm:px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   formData.dataType === type
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -115,7 +115,7 @@ export default function ValidatorForm({ onValidationStart, onValidationComplete 
         </div>
 
         {/* Basic Information */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           <div className="col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
             <input
@@ -184,7 +184,7 @@ export default function ValidatorForm({ onValidationStart, onValidationComplete 
 
         {/* Genomics-specific fields */}
         {formData.dataType === 'genomics' && (
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-4 border-t">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Gene Symbol</label>
               <input
@@ -220,7 +220,7 @@ export default function ValidatorForm({ onValidationStart, onValidationComplete 
 
         {/* In Vivo-specific fields */}
         {formData.dataType === 'in_vivo' && (
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-4 border-t">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Tissue Type</label>
               <input
@@ -255,7 +255,7 @@ export default function ValidatorForm({ onValidationStart, onValidationComplete 
         )}
 
         {/* Experiment Details */}
-        <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-4 border-t">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Experiment Type</label>
             <select

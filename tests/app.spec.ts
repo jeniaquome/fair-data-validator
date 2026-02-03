@@ -41,10 +41,10 @@ test.describe('FAIR Data Compliance Guardrail - Dashboard', () => {
     await page.goto('/')
     await expect(page.getByText('Validation Dashboard')).toBeVisible()
     await expect(page.getByText('Validation Reports Archive')).toBeVisible()
-    // Check for table content
+    // Check for table content (use table locator for desktop view)
     await expect(page.locator('table')).toBeVisible()
-    await expect(page.locator('text=Single-cell RNA-seq').first()).toBeVisible()
-    await expect(page.locator('text=Dr. Sarah Chen').first()).toBeVisible()
+    await expect(page.locator('table').getByText('Single-cell RNA-seq')).toBeVisible()
+    await expect(page.locator('table').getByText('Dr. Sarah Chen').first()).toBeVisible()
   })
 
   test('should filter reports by status', async ({ page }) => {
@@ -52,8 +52,9 @@ test.describe('FAIR Data Compliance Guardrail - Dashboard', () => {
 
     // Filter to non-compliant
     await page.locator('select').filter({ hasText: 'All Status' }).selectOption('non-compliant')
-    await expect(page.getByText('Pharmacokinetics study')).toBeVisible()
-    await expect(page.getByText('Western blot validation')).toBeVisible()
+    // Use table locator for desktop view to avoid matching mobile card view
+    await expect(page.locator('table').getByText('Pharmacokinetics study')).toBeVisible()
+    await expect(page.locator('table').getByText('Western blot validation')).toBeVisible()
   })
 
   test('should filter reports by data type', async ({ page }) => {
@@ -61,16 +62,18 @@ test.describe('FAIR Data Compliance Guardrail - Dashboard', () => {
 
     // Filter to in_vivo
     await page.locator('select').filter({ hasText: 'All Types' }).selectOption('in_vivo')
-    await expect(page.getByText('Pharmacokinetics study')).toBeVisible()
-    await expect(page.getByText('Toxicology assessment')).toBeVisible()
-    await expect(page.getByText('Biodistribution study')).toBeVisible()
+    // Use table locator for desktop view to avoid matching mobile card view
+    await expect(page.locator('table').getByText('Pharmacokinetics study')).toBeVisible()
+    await expect(page.locator('table').getByText('Toxicology assessment')).toBeVisible()
+    await expect(page.locator('table').getByText('Biodistribution study')).toBeVisible()
   })
 
   test('should search reports', async ({ page }) => {
     await page.goto('/')
 
     await page.fill('input[placeholder="Search reports..."]', 'CRISPR')
-    await expect(page.getByText('CRISPR knockout screen')).toBeVisible()
+    // Use table locator for desktop view to avoid matching mobile card view
+    await expect(page.locator('table').getByText('CRISPR knockout screen')).toBeVisible()
   })
 
   test('should view report details', async ({ page }) => {

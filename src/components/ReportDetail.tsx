@@ -108,45 +108,46 @@ export default function ReportDetail({ report, onBack }: Props) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <button
-          onClick={onBack}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <div className="flex-1">
-          <h2 className="text-2xl font-bold text-gray-900">{report.title}</h2>
-          <p className="text-gray-600">Report ID: {report.id}</p>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onBack}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <div className="flex-1 min-w-0">
+            <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">{report.title}</h2>
+            <p className="text-sm text-gray-600">Report ID: {report.id}</p>
+          </div>
         </div>
-        <div className={`px-4 py-2 rounded-lg border ${statusStyles[report.status]}`}>
+        <div className={`self-start sm:self-auto px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border text-sm sm:text-base ${statusStyles[report.status]}`}>
           <span className="font-medium">{statusLabels[report.status]}</span>
         </div>
       </div>
 
       {/* Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg shadow p-4">
-          <p className="text-sm text-gray-500">Sample ID</p>
-          <p className="font-semibold text-gray-900">{report.sampleId}</p>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+          <p className="text-xs sm:text-sm text-gray-500">Sample ID</p>
+          <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{report.sampleId}</p>
         </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <p className="text-sm text-gray-500">Researcher</p>
-          <p className="font-semibold text-gray-900">{report.researcher}</p>
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+          <p className="text-xs sm:text-sm text-gray-500">Researcher</p>
+          <p className="font-semibold text-gray-900 text-sm sm:text-base truncate">{report.researcher}</p>
         </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <p className="text-sm text-gray-500">Data Type</p>
-          <p className="font-semibold text-gray-900">{dataTypeLabels[report.dataType]}</p>
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+          <p className="text-xs sm:text-sm text-gray-500">Data Type</p>
+          <p className="font-semibold text-gray-900 text-sm sm:text-base">{dataTypeLabels[report.dataType]}</p>
         </div>
-        <div className="bg-white rounded-lg shadow p-4">
-          <p className="text-sm text-gray-500">Submitted</p>
-          <p className="font-semibold text-gray-900">
-            {new Date(report.submittedAt).toLocaleDateString()} at{' '}
-            {new Date(report.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+          <p className="text-xs sm:text-sm text-gray-500">Submitted</p>
+          <p className="font-semibold text-gray-900 text-sm sm:text-base">
+            {new Date(report.submittedAt).toLocaleDateString()}
           </p>
         </div>
       </div>
@@ -272,15 +273,15 @@ export default function ReportDetail({ report, onBack }: Props) {
           )}
 
           {/* Actions */}
-          <div className="flex gap-4">
-            <button className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <button className="flex-1 bg-blue-600 text-white py-2.5 sm:py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm sm:text-base">
               Download Report (PDF)
             </button>
-            <button className="flex-1 bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+            <button className="flex-1 bg-white border border-gray-300 text-gray-700 py-2.5 sm:py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors text-sm sm:text-base">
               Re-validate
             </button>
             {report.status === 'pending-review' && (
-              <button className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors">
+              <button className="flex-1 bg-green-600 text-white py-2.5 sm:py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm sm:text-base">
                 Approve
               </button>
             )}

@@ -144,7 +144,7 @@ export default function AlertsPanel({ isOpen, onClose, onViewReport }: Props) {
       <div className="fixed inset-0 z-40" onClick={onClose} />
 
       {/* Panel */}
-      <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden">
+      <div className="fixed sm:absolute inset-x-2 sm:inset-x-auto sm:right-0 top-16 sm:top-full sm:mt-2 w-auto sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden max-h-[80vh] sm:max-h-none flex flex-col">
         <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center bg-gray-50">
           <div>
             <h3 className="font-semibold text-gray-900">Notifications</h3>

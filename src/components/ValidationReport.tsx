@@ -84,8 +84,8 @@ function IssueItem({ issue }: { issue: ValidationIssue }) {
 export default function ValidationReport({ result, isValidating }: Props) {
   if (isValidating) {
     return (
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Validation Report</h2>
+      <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Validation Report</h2>
         <div className="flex items-center justify-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
@@ -95,10 +95,10 @@ export default function ValidationReport({ result, isValidating }: Props) {
 
   if (!result) {
     return (
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Validation Report</h2>
-        <div className="text-center py-12 text-gray-500">
-          <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Validation Report</h2>
+        <div className="text-center py-8 sm:py-12 text-gray-500">
+          <svg className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <p>Enter experimental data and click &quot;Validate&quot; to see the compliance report</p>
@@ -113,18 +113,18 @@ export default function ValidationReport({ result, isValidating }: Props) {
   const infos = result.issues.filter(i => i.severity === 'info')
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Validation Report</h2>
+    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+      <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Validation Report</h2>
 
       {/* Overall Status */}
-      <div className={`p-4 rounded-lg mb-6 ${result.isValid ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-        <div className="flex items-center gap-3">
+      <div className={`p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 ${result.isValid ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+        <div className="flex items-center gap-2 sm:gap-3">
           {result.isValid ? (
-            <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
           ) : (
-            <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-6 h-6 sm:w-8 sm:h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
             </svg>
           )}
@@ -140,7 +140,7 @@ export default function ValidationReport({ result, isValidating }: Props) {
       </div>
 
       {/* FAIR Scores */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">FAIR Principle Scores</h3>
         <ScoreBar label="Findable" score={result.fairScores.findable} color="bg-purple-500" />
         <ScoreBar label="Accessible" score={result.fairScores.accessible} color="bg-blue-500" />
@@ -149,17 +149,17 @@ export default function ValidationReport({ result, isValidating }: Props) {
       </div>
 
       {/* Issue Summary */}
-      <div className="flex gap-4 mb-6">
-        <div className="flex-1 text-center p-3 bg-red-50 rounded-lg">
-          <div className="text-2xl font-bold text-red-600">{errors.length}</div>
+      <div className="flex gap-2 sm:gap-4 mb-4 sm:mb-6">
+        <div className="flex-1 text-center p-2 sm:p-3 bg-red-50 rounded-lg">
+          <div className="text-xl sm:text-2xl font-bold text-red-600">{errors.length}</div>
           <div className="text-xs text-red-700">Errors</div>
         </div>
-        <div className="flex-1 text-center p-3 bg-yellow-50 rounded-lg">
-          <div className="text-2xl font-bold text-yellow-600">{warnings.length}</div>
+        <div className="flex-1 text-center p-2 sm:p-3 bg-yellow-50 rounded-lg">
+          <div className="text-xl sm:text-2xl font-bold text-yellow-600">{warnings.length}</div>
           <div className="text-xs text-yellow-700">Warnings</div>
         </div>
-        <div className="flex-1 text-center p-3 bg-blue-50 rounded-lg">
-          <div className="text-2xl font-bold text-blue-600">{infos.length}</div>
+        <div className="flex-1 text-center p-2 sm:p-3 bg-blue-50 rounded-lg">
+          <div className="text-xl sm:text-2xl font-bold text-blue-600">{infos.length}</div>
           <div className="text-xs text-blue-700">Suggestions</div>
         </div>
       </div>
