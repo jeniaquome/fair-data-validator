@@ -110,6 +110,59 @@ export default function ReportDetail({ report, onBack }: Props) {
   const warnings = result.issues.filter(i => i.severity === 'warning')
   const infos = result.issues.filter(i => i.severity === 'info')
 
+  const handleDownloadReport = () => {
+    // Generate comprehensive report export
+    const reportData = {
+      reportId: report.id,
+      title: report.title,
+      sampleId: report.sampleId,
+      researcher: report.researcher,
+      dataType: report.dataType,
+      submittedAt: report.submittedAt,
+      status: report.status,
+      validation: {
+        overallScore: overallPercentage,
+        scoreBreakdown: {
+          score: result.score,
+          maxScore: result.maxScore,
+        },
+        fairScores: result.fairScores,
+        isValid: result.isValid,
+      },
+      issues: {
+        errors: errors.length,
+        warnings: warnings.length,
+        suggestions: infos.length,
+        details: result.issues,
+      },
+      experimentDetails: {
+        organism: report.organism,
+        experimentType: report.experimentType,
+      },
+      exportDate: new Date().toISOString(),
+    }
+
+    // Create downloadable JSON file
+    const dataStr = JSON.stringify(reportData, null, 2)
+    const dataBlob = new Blob([dataStr], { type: 'application/json' })
+    const url = URL.createObjectURL(dataBlob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `fairguard-report-${report.id}-${new Date().toISOString().split('T')[0]}.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
+  const handleRevalidate = () => {
+    alert('Re-validation initiated - In a production app, this would re-run the FAIR compliance validation')
+  }
+
+  const handleApprove = () => {
+    alert('Report approved - In a production app, this would update the report status and notify stakeholders')
+  }
+
   const statusStyles = {
     'compliant': 'bg-emerald-50 text-emerald-700 border border-emerald-200',
     'non-compliant': 'bg-rose-50 text-rose-700 border border-rose-200',
@@ -302,20 +355,29 @@ export default function ReportDetail({ report, onBack }: Props) {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <button className="flex-1 btn-brand py-3 px-4 flex items-center justify-center gap-2">
+            <button
+              onClick={handleDownloadReport}
+              className="flex-1 btn-brand py-3 px-4 flex items-center justify-center gap-2"
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
-              Download Report (PDF)
+              Download Report
             </button>
-            <button className="flex-1 bg-white border border-slate-200 text-slate-700 py-3 px-4 rounded-xl font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2">
+            <button
+              onClick={handleRevalidate}
+              className="flex-1 bg-white border border-slate-200 text-slate-700 py-3 px-4 rounded-xl font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2"
+            >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
               Re-validate
             </button>
             {report.status === 'pending-review' && (
-              <button className="flex-1 bg-emerald-600 text-white py-3 px-4 rounded-xl font-semibold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30">
+              <button
+                onClick={handleApprove}
+                className="flex-1 bg-emerald-600 text-white py-3 px-4 rounded-xl font-semibold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30"
+              >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>

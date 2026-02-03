@@ -1,10 +1,15 @@
 'use client'
 
+import { useState } from 'react'
+
 interface Props {
   onBack: () => void
 }
 
 export default function ProfileView({ onBack }: Props) {
+  const [isEditing, setIsEditing] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+
   const user = {
     name: 'Dr. Sarah Chen',
     email: 'sarah.chen@genentech.com',
@@ -17,6 +22,47 @@ export default function ProfileView({ onBack }: Props) {
     orcid: '0000-0002-1825-0097',
     phone: '+1 (650) 225-1000',
     location: 'South San Francisco, CA',
+  }
+
+  const handleEditProfile = () => {
+    setIsEditing(true)
+    // In a real app, this would open an edit modal or form
+    alert('Edit Profile functionality - In a production app, this would open an edit form')
+  }
+
+  const handleChangePassword = () => {
+    // In a real app, this would open a password change modal
+    alert('Change Password - In a production app, this would open a secure password change form')
+  }
+
+  const handleDownloadData = () => {
+    // Generate user data export
+    const userData = {
+      profile: user,
+      exportDate: new Date().toISOString(),
+      dataType: 'User Profile Export',
+    }
+
+    const dataStr = JSON.stringify(userData, null, 2)
+    const dataBlob = new Blob([dataStr], { type: 'application/json' })
+    const url = URL.createObjectURL(dataBlob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `fairguard-profile-${new Date().toISOString().split('T')[0]}.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
+  const handleDeleteAccount = () => {
+    setShowDeleteConfirm(true)
+  }
+
+  const confirmDelete = () => {
+    // In a real app, this would call an API to delete the account
+    alert('Account Deletion - In a production app, this would permanently delete your account after additional verification')
+    setShowDeleteConfirm(false)
   }
 
   return (
@@ -62,7 +108,10 @@ export default function ProfileView({ onBack }: Props) {
                 </div>
               </div>
 
-              <button className="w-full mt-6 btn-brand py-2.5 px-4 text-sm">
+              <button
+                onClick={handleEditProfile}
+                className="w-full mt-6 btn-brand py-2.5 px-4 text-sm"
+              >
                 Edit Profile
               </button>
             </div>
@@ -135,18 +184,56 @@ export default function ProfileView({ onBack }: Props) {
 
           {/* Actions */}
           <div className="flex flex-wrap gap-3">
-            <button className="btn-secondary py-2.5 px-4 text-sm">
+            <button
+              onClick={handleChangePassword}
+              className="btn-secondary py-2.5 px-4 text-sm"
+            >
               Change Password
             </button>
-            <button className="btn-secondary py-2.5 px-4 text-sm">
+            <button
+              onClick={handleDownloadData}
+              className="btn-secondary py-2.5 px-4 text-sm"
+            >
               Download My Data
             </button>
-            <button className="text-sm text-red-600 hover:text-red-700 font-semibold py-2.5 px-4 transition-colors">
+            <button
+              onClick={handleDeleteAccount}
+              className="text-sm text-red-600 hover:text-red-700 font-semibold py-2.5 px-4 transition-colors"
+            >
               Delete Account
             </button>
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <>
+          <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowDeleteConfirm(false)} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Delete Account</h3>
+              <p className="text-slate-600 mb-6">
+                Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="flex-1 btn-secondary py-2.5 px-4 text-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 bg-red-600 text-white py-2.5 px-4 rounded-lg text-sm font-semibold hover:bg-red-700 transition-colors"
+                >
+                  Delete Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

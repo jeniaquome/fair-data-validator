@@ -6,11 +6,38 @@ interface Props {
   onBack: () => void
 }
 
+interface Settings {
+  emailNotifications: boolean
+  validationAlerts: boolean
+  weeklyReport: boolean
+  autoSave: boolean
+  defaultDataType: string
+  validationThreshold: string
+}
+
+const defaultSettings: Settings = {
+  emailNotifications: true,
+  validationAlerts: true,
+  weeklyReport: false,
+  autoSave: true,
+  defaultDataType: 'genomics',
+  validationThreshold: 'standard',
+}
+
 export default function SettingsView({ onBack }: Props) {
-  const [emailNotifications, setEmailNotifications] = useState(true)
-  const [validationAlerts, setValidationAlerts] = useState(true)
-  const [weeklyReport, setWeeklyReport] = useState(false)
-  const [autoSave, setAutoSave] = useState(true)
+  const [settings, setSettings] = useState<Settings>(defaultSettings)
+  const [showSaveConfirm, setShowSaveConfirm] = useState(false)
+
+  const handleSave = () => {
+    // In a real app, this would save to backend/localStorage
+    setShowSaveConfirm(true)
+    setTimeout(() => setShowSaveConfirm(false), 3000)
+  }
+
+  const handleReset = () => {
+    setSettings(defaultSettings)
+    alert('Settings reset to defaults')
+  }
 
   return (
     <div className="space-y-6">
@@ -29,6 +56,16 @@ export default function SettingsView({ onBack }: Props) {
           <p className="text-slate-600">Manage your preferences and account settings</p>
         </div>
       </div>
+
+      {/* Save Confirmation */}
+      {showSaveConfirm && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 flex items-center gap-3">
+          <svg className="w-5 h-5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          <p className="text-sm font-medium text-emerald-800">Settings saved successfully!</p>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Navigation */}
@@ -61,14 +98,14 @@ export default function SettingsView({ onBack }: Props) {
                   <p className="text-sm text-slate-500">Receive email updates about your account</p>
                 </div>
                 <button
-                  onClick={() => setEmailNotifications(!emailNotifications)}
+                  onClick={() => setSettings({ ...settings, emailNotifications: !settings.emailNotifications })}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    emailNotifications ? 'bg-indigo-600' : 'bg-slate-200'
+                    settings.emailNotifications ? 'bg-indigo-600' : 'bg-slate-200'
                   }`}
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      emailNotifications ? 'translate-x-6' : 'translate-x-1'
+                      settings.emailNotifications ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
                 </button>
@@ -80,14 +117,14 @@ export default function SettingsView({ onBack }: Props) {
                   <p className="text-sm text-slate-500">Get notified when validation completes</p>
                 </div>
                 <button
-                  onClick={() => setValidationAlerts(!validationAlerts)}
+                  onClick={() => setSettings({ ...settings, validationAlerts: !settings.validationAlerts })}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    validationAlerts ? 'bg-indigo-600' : 'bg-slate-200'
+                    settings.validationAlerts ? 'bg-indigo-600' : 'bg-slate-200'
                   }`}
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      validationAlerts ? 'translate-x-6' : 'translate-x-1'
+                      settings.validationAlerts ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
                 </button>
@@ -99,14 +136,14 @@ export default function SettingsView({ onBack }: Props) {
                   <p className="text-sm text-slate-500">Receive weekly compliance reports</p>
                 </div>
                 <button
-                  onClick={() => setWeeklyReport(!weeklyReport)}
+                  onClick={() => setSettings({ ...settings, weeklyReport: !settings.weeklyReport })}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    weeklyReport ? 'bg-indigo-600' : 'bg-slate-200'
+                    settings.weeklyReport ? 'bg-indigo-600' : 'bg-slate-200'
                   }`}
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      weeklyReport ? 'translate-x-6' : 'translate-x-1'
+                      settings.weeklyReport ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
                 </button>
@@ -124,14 +161,14 @@ export default function SettingsView({ onBack }: Props) {
                   <p className="text-sm text-slate-500">Automatically save validation forms</p>
                 </div>
                 <button
-                  onClick={() => setAutoSave(!autoSave)}
+                  onClick={() => setSettings({ ...settings, autoSave: !settings.autoSave })}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    autoSave ? 'bg-indigo-600' : 'bg-slate-200'
+                    settings.autoSave ? 'bg-indigo-600' : 'bg-slate-200'
                   }`}
                 >
                   <span
                     className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      autoSave ? 'translate-x-6' : 'translate-x-1'
+                      settings.autoSave ? 'translate-x-6' : 'translate-x-1'
                     }`}
                   />
                 </button>
@@ -139,19 +176,27 @@ export default function SettingsView({ onBack }: Props) {
 
               <div className="py-3 border-b border-slate-200">
                 <label className="block font-medium text-slate-900 mb-2">Default Data Type</label>
-                <select className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option>Genomics</option>
-                  <option>In Vivo</option>
-                  <option>General</option>
+                <select
+                  value={settings.defaultDataType}
+                  onChange={(e) => setSettings({ ...settings, defaultDataType: e.target.value })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="genomics">Genomics</option>
+                  <option value="in_vivo">In Vivo</option>
+                  <option value="general">General</option>
                 </select>
               </div>
 
               <div className="py-3">
                 <label className="block font-medium text-slate-900 mb-2">Validation Threshold</label>
-                <select className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option>Standard (60%)</option>
-                  <option>Strict (70%)</option>
-                  <option>Lenient (50%)</option>
+                <select
+                  value={settings.validationThreshold}
+                  onChange={(e) => setSettings({ ...settings, validationThreshold: e.target.value })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="standard">Standard (60%)</option>
+                  <option value="strict">Strict (70%)</option>
+                  <option value="lenient">Lenient (50%)</option>
                 </select>
               </div>
             </div>
@@ -159,10 +204,16 @@ export default function SettingsView({ onBack }: Props) {
 
           {/* Save Button */}
           <div className="flex gap-3">
-            <button className="btn-brand py-2.5 px-6 text-sm">
+            <button
+              onClick={handleSave}
+              className="btn-brand py-2.5 px-6 text-sm"
+            >
               Save Changes
             </button>
-            <button className="btn-secondary py-2.5 px-6 text-sm">
+            <button
+              onClick={handleReset}
+              className="btn-secondary py-2.5 px-6 text-sm"
+            >
               Reset to Defaults
             </button>
           </div>
