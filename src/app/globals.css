@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
-/* FAIRguard Brand Design System */
+/* FAIRguard Brand Design System - Professional Scientific Theme */
 :root {
-  /* Brand Colors */
+  /* Brand Colors - More Subtle */
   --brand-primary: #4F46E5;
   --brand-primary-dark: #4338CA;
   --brand-primary-light: #6366F1;
 
-  /* FAIR Principle Colors */
-  --fair-findable: #8B5CF6;
-  --fair-accessible: #0EA5E9;
-  --fair-interoperable: #14B8A6;
-  --fair-reusable: #F59E0B;
+  /* FAIR Principle Colors - Muted */
+  --fair-findable: #6366F1;
+  --fair-accessible: #3B82F6;
+  --fair-interoperable: #0891B2;
+  --fair-reusable: #D97706;
 
   /* Semantic Colors */
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: #F43F5E;
-  --color-info: #3B82F6;
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-error: #DC2626;
+  --color-info: #2563EB;
 
   /* Background */
   --bg-primary: #F8FAFC;
@@ -29,10 +29,9 @@
   --text-secondary: #475569;
   --text-muted: #94A3B8;
 
-  /* Gradients */
-  --gradient-brand: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #8B5CF6 100%);
-  --gradient-fair: linear-gradient(135deg, #8B5CF6 0%, #0EA5E9 33%, #14B8A6 66%, #F59E0B 100%);
-  --gradient-card: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+  /* Borders */
+  --border-light: #E2E8F0;
+  --border-default: #CBD5E1;
 }
 
 /* Base Styles */
@@ -63,95 +62,69 @@ body {
   background: #94A3B8;
 }
 
-/* Brand Gradient Text */
-.text-gradient-brand {
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* FAIR Gradient Border */
-.border-gradient-fair {
-  position: relative;
-  background: var(--bg-card);
-  border-radius: 12px;
-}
-
-.border-gradient-fair::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 2px;
-  border-radius: 12px;
-  background: var(--gradient-fair);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* Glass Card Effect */
-.glass-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-/* Brand Button */
+/* Brand Button - Simplified */
 .btn-brand {
-  background: var(--gradient-brand);
+  background: var(--brand-primary);
   color: white;
   font-weight: 600;
-  border-radius: 10px;
+  border-radius: 8px;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.3);
+  box-shadow: 0 1px 3px 0 rgba(79, 70, 229, 0.2);
 }
 
 .btn-brand:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px 0 rgba(79, 70, 229, 0.4);
+  background: var(--brand-primary-dark);
+  box-shadow: 0 2px 6px 0 rgba(79, 70, 229, 0.3);
 }
 
-/* FAIR Badge Styles */
+/* Secondary Button */
+.btn-secondary {
+  background: white;
+  color: var(--text-secondary);
+  font-weight: 600;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-default);
+}
+
+/* FAIR Badge Styles - More Subtle */
 .fair-badge-f {
-  background: rgba(139, 92, 246, 0.1);
-  color: #7C3AED;
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: rgba(99, 102, 241, 0.08);
+  color: #4338CA;
+  border: 1px solid rgba(99, 102, 241, 0.15);
 }
 
 .fair-badge-a {
-  background: rgba(14, 165, 233, 0.1);
-  color: #0284C7;
-  border: 1px solid rgba(14, 165, 233, 0.2);
+  background: rgba(59, 130, 246, 0.08);
+  color: #1D4ED8;
+  border: 1px solid rgba(59, 130, 246, 0.15);
 }
 
 .fair-badge-i {
-  background: rgba(20, 184, 166, 0.1);
-  color: #0D9488;
-  border: 1px solid rgba(20, 184, 166, 0.2);
+  background: rgba(8, 145, 178, 0.08);
+  color: #0E7490;
+  border: 1px solid rgba(8, 145, 178, 0.15);
 }
 
 .fair-badge-r {
-  background: rgba(245, 158, 11, 0.1);
-  color: #D97706;
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  background: rgba(217, 119, 6, 0.08);
+  color: #B45309;
+  border: 1px solid rgba(217, 119, 6, 0.15);
 }
 
-/* Animated Gradient Border */
-@keyframes gradient-rotate {
-  0% { --angle: 0deg; }
-  100% { --angle: 360deg; }
-}
-
-/* Card hover effect */
+/* Card hover effect - Subtle */
 .card-hover {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px -12px rgba(79, 70, 229, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.08);
 }
 
 /* Score ring animation */
@@ -165,23 +138,26 @@ body {
   animation: score-fill 1s ease-out forwards;
 }
 
-/* Pulse animation for notifications */
-@keyframes pulse-ring {
-  0% {
-    transform: scale(0.8);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(2);
-    opacity: 0;
-  }
+/* Status badges - Professional */
+.status-badge-success {
+  background: rgba(5, 150, 105, 0.08);
+  color: #047857;
+  border: 1px solid rgba(5, 150, 105, 0.2);
 }
 
-.pulse-notification::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: #F43F5E;
-  animation: pulse-ring 1.5s ease-out infinite;
+.status-badge-error {
+  background: rgba(220, 38, 38, 0.08);
+  color: #B91C1C;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.status-badge-warning {
+  background: rgba(217, 119, 6, 0.08);
+  color: #B45309;
+  border: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+/* Remove excessive gradients and rainbow effects */
+.gradient-subtle {
+  background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%);
 }

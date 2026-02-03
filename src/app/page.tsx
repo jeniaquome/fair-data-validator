@@ -7,11 +7,14 @@ import Dashboard from '@/components/Dashboard'
 import AlertsPanel from '@/components/AlertsPanel'
 import ProfilePanel from '@/components/ProfilePanel'
 import ReportDetail from '@/components/ReportDetail'
+import ProfileView from '@/components/ProfileView'
+import MyReportsView from '@/components/MyReportsView'
+import SettingsView from '@/components/SettingsView'
 import Logo from '@/components/Logo'
 import { ValidationResult } from '@/lib/validator'
 import { mockReports, SavedReport } from '@/lib/mockReports'
 
-type View = 'dashboard' | 'validator' | 'report'
+type View = 'dashboard' | 'validator' | 'report' | 'profile' | 'my-reports' | 'settings'
 
 export default function Home() {
   const [view, setView] = useState<View>('dashboard')
@@ -37,16 +40,21 @@ export default function Home() {
     setValidationResult(null)
   }
 
+  const handleProfileNavigation = (destination: View) => {
+    setView(destination)
+    setProfileOpen(false)
+  }
+
   return (
     <main className="min-h-screen bg-slate-50">
       {/* Navigation Header */}
-      <header className="bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200/60 sticky top-0 z-30">
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo - clickable to go home */}
             <button
               onClick={handleLogoClick}
-              className="flex items-center hover:opacity-80 transition-opacity"
+              className="flex items-center hover:opacity-70 transition-opacity"
             >
               <Logo size="md" />
             </button>
@@ -61,17 +69,17 @@ export default function Home() {
                     setAlertsOpen(!alertsOpen)
                     setProfileOpen(false)
                   }}
-                  className={`p-2 rounded-xl transition-all duration-200 relative ${
+                  className={`p-2 rounded-lg transition-colors relative ${
                     alertsOpen
-                      ? 'bg-indigo-50 text-indigo-600'
-                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                      ? 'bg-slate-100 text-slate-900'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
                   }`}
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                   {unreadAlertsCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg shadow-rose-500/30">
+                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
                       {unreadAlertsCount > 9 ? '9+' : unreadAlertsCount}
                     </span>
                   )}
@@ -92,16 +100,16 @@ export default function Home() {
                     setProfileOpen(!profileOpen)
                     setAlertsOpen(false)
                   }}
-                  className={`flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-xl transition-all duration-200 ${
+                  className={`flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-lg transition-colors ${
                     profileOpen
-                      ? 'bg-indigo-50'
-                      : 'hover:bg-slate-100'
+                      ? 'bg-slate-100'
+                      : 'hover:bg-slate-50'
                   }`}
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-lg shadow-indigo-500/30">
+                  <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                     SC
                   </div>
-                  <svg className="w-4 h-4 text-slate-400 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-slate-500 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -109,6 +117,7 @@ export default function Home() {
                 <ProfilePanel
                   isOpen={profileOpen}
                   onClose={() => setProfileOpen(false)}
+                  onNavigate={handleProfileNavigation}
                 />
               </div>
             </div>
@@ -118,7 +127,17 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {view === 'report' && selectedReport ? (
+        {view === 'profile' ? (
+          <ProfileView onBack={() => setView('dashboard')} />
+        ) : view === 'my-reports' ? (
+          <MyReportsView
+            reports={mockReports}
+            onBack={() => setView('dashboard')}
+            onViewReport={handleViewReport}
+          />
+        ) : view === 'settings' ? (
+          <SettingsView onBack={() => setView('dashboard')} />
+        ) : view === 'report' && selectedReport ? (
           <ReportDetail
             report={selectedReport}
             onBack={() => {
@@ -131,7 +150,7 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setView('dashboard')}
-                className="p-2 hover:bg-slate-200 rounded-xl transition-colors"
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
               >
                 <svg className="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
